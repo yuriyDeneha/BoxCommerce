@@ -7,8 +7,8 @@ const routes: Routes = [
     loadChildren: () => import('./convert/convert.module').then(m => m.ConvertModule)
   },
   {
-    path: '',
-    redirectTo: '/convert',
+    path: '**',
+    redirectTo: 'convert',
     pathMatch: 'full'
   }
 ];

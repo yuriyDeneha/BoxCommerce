@@ -19,12 +19,12 @@ const routes: Routes = [
         component: LengthComponent
       },
       {
-        path: '',
-        redirectTo: '/currency',
+        path: '**',
+        redirectTo: 'currency',
         pathMatch: 'full'
       }
     ]
-  },
+  }
 ];
 
 @NgModule({
