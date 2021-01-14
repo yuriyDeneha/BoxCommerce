@@ -5,6 +5,7 @@ import { ConvertRoutingModule } from './convert-routing.module';
 import { IndexConvertComponent } from './index-convert/index-convert.component';
 import { CurrencyComponent } from './currency/currency.component';
 import { LengthComponent } from './length/length.component';
+import {SharedModule} from '../shared/shared.module';
 
 
 
@@ -14,9 +15,10 @@ import { LengthComponent } from './length/length.component';
     CurrencyComponent,
     LengthComponent
   ],
-  imports: [
-    CommonModule,
-    ConvertRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        ConvertRoutingModule,
+        SharedModule
+    ]
 })
 export class ConvertModule { }
