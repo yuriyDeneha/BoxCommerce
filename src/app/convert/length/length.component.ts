@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./length.component.scss']
 })
 export class LengthComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit(): void {
