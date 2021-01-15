@@ -1,9 +1,9 @@
 export enum UnitsEnum {
-  Feets = 1,
-  Meters,
-  Inches,
-  Yards,
-  Centimeters,
-  Kilometers,
-  Miles
+  Feets = 'ft',
+  Meters = 'm',
+  Inches = 'in',
+  Yards = 'yd',
+  Centimeters = 'cm',
+  Kilometers = 'km',
+  Miles = 'ml'
 }
