@@ -1,0 +1,32 @@
+<p>length-unit-converter works!</p>
+<div>
+  <div>
+    <mat-form-field appearance="outline">
+      <input aria-label="convert-from" [(ngModel)]="initialValue" (change)="calculateResult()" type="number" min="0" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Length unit</mat-label>
+      <mat-select [(ngModel)]="initUnits" (selectionChange)="calculateResult()">
+        <mat-option *ngFor="let unitlength of lengthUnitsConverterItems" [value]="unitlength.value">
+          {{ unitlength.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="primary" (click)="swapUnits()">Change</button>
+
+  <div>
+    <mat-form-field appearance="outline">
+      <input aria-label="convert-from" [(ngModel)]="calculatedResult" type="number" min="0" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Length unit</mat-label>
+      <mat-select [(ngModel)]="calculatedUnits" (selectionChange)="calculateResult()">
+        <mat-option *ngFor="let unitlength of lengthUnitsConverterItems" [value]="unitlength.value">
+          {{ unitlength.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
