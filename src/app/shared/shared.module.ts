@@ -11,15 +11,18 @@ import { ChartsModule } from 'ng2-charts';
 
 import { CurrencyConverterComponent } from './currency-converter/currency-converter.component';
 import { ConverterComponent } from './converter/converter.component';
+import { LengthUnitConverterComponent } from './length-unit-converter/length-unit-converter.component';
 
 
 @NgModule({
   declarations: [
     CurrencyConverterComponent,
     ConverterComponent,
+    LengthUnitConverterComponent
   ],
   exports: [
     CurrencyConverterComponent,
+    LengthUnitConverterComponent
   ],
   imports: [
     CommonModule,
