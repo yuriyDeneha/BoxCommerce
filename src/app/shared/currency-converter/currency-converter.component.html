@@ -1,48 +1,20 @@
 <div class="currency-converter" [formGroup]="currencyForm">
 
-  <header *ngIf="coefficient">
-    <h2 class="currency-converter__title">1{{ currencyForm.get('fromCurrency').value }} equals {{ coefficient.toFixed(2) + currencyForm.get('toCurrency').value }}</h2>
+  <header *ngIf="currencyForm.get('coefficient').value">
+    <h2 class="currency-converter__title">1{{ currencyForm.get('fromType').value }} equals {{ Math.round(currencyForm.get('coefficient').value * 1000000) / 1000000 + currencyForm.get('toType').value }}</h2>
   </header>
 
   <section>
-    <div class="currency-converter__form-block">
-      <mat-form-field appearance="outline">
-        <input aria-label="convert-from" formControlName="fromValue" type="number" min="0" matInput>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Currency</mat-label>
-        <mat-select formControlName="fromCurrency">
-          <mat-option *ngFor="let currency of currencyList" [value]="currency">
-            {{ currency }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <button mat-raised-button color="primary" class="currency-converter__switch-btn" (click)="switchValues()">Switch</button>
-
-    <div class="currency-converter__form-block">
-      <mat-form-field appearance="outline">
-        <input aria-label="convert-from" formControlName="toValue" type="number" min="0" matInput>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Currency</mat-label>
-        <mat-select formControlName="toCurrency">
-          <mat-option *ngFor="let currency of currencyList" [value]="currency">
-            {{ currency }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    <app-converter [selectName]="'Currency'" [converterForm]="currencyForm" [typeList]="currencyList" [valueList]="availableCurrencies"></app-converter>
 
     <!--  CHART-->
-    <ng-container *ngIf="showChat">
+    <ng-container *ngIf="showChart">
       <mat-button-toggle-group formControlName="period" aria-label="Period" class="currency-converter__chart-control">
         <mat-button-toggle [value]="Period.week">Last {{ Period.week }} days</mat-button-toggle>
         <mat-button-toggle [value]="Period.month">Last {{ Period.month }} days</mat-button-toggle>
         <mat-button-toggle [value]="Period.year">Last {{ Period.year }} days</mat-button-toggle>
       </mat-button-toggle-group>
-      <div *ngIf="currencyForm.get('fromCurrency').valid && currencyForm.get('toCurrency').valid" class="currency-converter__chart">
+      <div *ngIf="currencyForm.get('fromType').valid && currencyForm.get('toType').valid" class="currency-converter__chart">
         <div style="display: block">
           <canvas baseChart
                   [datasets]="lineChartData"

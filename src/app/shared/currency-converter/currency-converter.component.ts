@@ -12,10 +12,10 @@ import { CurrencyService } from '../services/currency.service';
 export class CurrencyConverterComponent implements OnInit {
   currencyForm: FormGroup;
   currencyList: string[] = [];
-  availableCurrencies: any[] = [];
-  coefficient: number;
+  availableCurrencies: any;
+  Math = Math;
   Period = Period;
-  showChat: boolean;
+  showChart: boolean;
 
   lineChartOptions = {
     scaleShowVerticalLines: false,
@@ -39,9 +39,10 @@ export class CurrencyConverterComponent implements OnInit {
   createForm(): void {
     this.currencyForm = this.fb.group({
       fromValue: [0],
-      fromCurrency: ['', [ Validators.required ]],
+      fromType: ['', [ Validators.required ]],
       toValue: [0],
-      toCurrency: ['', [ Validators.required ]],
+      toType: ['', [ Validators.required ]],
+      coefficient: [null],
       period: [Period.month]
     });
   }
@@ -57,32 +58,13 @@ export class CurrencyConverterComponent implements OnInit {
     Object.keys(this.currencyForm.value).forEach(key => {
       this.currencyForm.get(key).valueChanges
         .pipe(debounceTime(0))
-        .subscribe(res => {
-          if (key === 'fromValue' || key === 'toValue') {
-            this.currencyForm.get('fromValue').setValue(+this.currencyForm.get('fromValue').value, {emitEvent: false});
-            this.currencyForm.get('toValue').setValue(+this.currencyForm.get('toValue').value, {emitEvent: false});
-          }
+        .subscribe(() => {
           if (this.currencyForm.invalid) {
             return;
           }
-          const roundTo = 10000;
           switch (key) {
-            case 'fromCurrency':
-            case 'toCurrency':
-              this.getHistory();
-            // tslint:disable-next-line:no-switch-case-fall-through
-            case 'fromValue':
-              this.coefficient = this.availableCurrencies[this.currencyForm.get('toCurrency').value]
-                / this.availableCurrencies[this.currencyForm.get('fromCurrency').value];
-              this.currencyForm.get('toValue').setValue(Math.round((this.coefficient * this.currencyForm.get('fromValue').value) * roundTo)
-                / roundTo, {emitEvent: false});
-              break;
-            case 'toValue':
-              this.coefficient = this.availableCurrencies[this.currencyForm.get('fromCurrency').value]
-                / this.availableCurrencies[this.currencyForm.get('toCurrency').value];
-              this.currencyForm.get('fromValue').setValue(Math.round((this.coefficient * this.currencyForm.get('toValue').value) * roundTo)
-              / roundTo, {emitEvent: false});
-              break;
+            case 'fromType':
+            case 'toType':
             case 'period':
               this.getHistory();
           }
@@ -90,17 +72,8 @@ export class CurrencyConverterComponent implements OnInit {
     });
   }
 
-  switchValues(): void {
-    const prevValues = this.currencyForm.value;
-    this.currencyForm.patchValue({
-      fromCurrency: prevValues?.toCurrency,
-      toCurrency: prevValues?.fromCurrency
-    });
-    this.getHistory();
-  }
-
   getHistory(): void {
-    this.showChat = this.currencyForm.get('fromCurrency').value !== this.currencyForm.get('toCurrency').value;
+    this.showChart = this.currencyForm.get('fromType').value !== this.currencyForm.get('toType').value;
     const days = this.currencyForm.get('period').value;
     const date = new Date();
     date.setDate(date.getDate() - (days - 1));
@@ -110,13 +83,13 @@ export class CurrencyConverterComponent implements OnInit {
       Object.keys(res?.rates).sort().forEach(rate => {
         labels.push(rate);
         // or 1 for EUR
-        data.push((res?.rates[rate]?.[this.currencyForm.get('toCurrency').value] || 1)
-        / (res?.rates[rate]?.[this.currencyForm.get('fromCurrency').value] || 1));
+        data.push((res?.rates[rate]?.[this.currencyForm.get('toType').value] || 1)
+        / (res?.rates[rate]?.[this.currencyForm.get('fromType').value] || 1));
       });
       this.lineChartData = [
         {
           data,
-          label: `${this.currencyForm.get('fromCurrency').value} to ${this.currencyForm.get('toCurrency').value}`
+          label: `${this.currencyForm.get('fromType').value} to ${this.currencyForm.get('toType').value}`
         }
       ];
       this.lineChartLabels = labels;

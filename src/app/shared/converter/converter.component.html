@@ -1,0 +1,31 @@
+<div class="converter" [formGroup]="converterForm">
+  <div class="converter__form-block">
+    <mat-form-field appearance="outline">
+      <input aria-label="convert-from" formControlName="fromValue" type="number" min="0" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ selectName }}</mat-label>
+      <mat-select formControlName="fromType">
+        <mat-option *ngFor="let currency of typeList" [value]="currency">
+          {{ currency }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="primary" class="converter__switch-btn" (click)="switchValues()">Switch</button>
+
+  <div class="converter__form-block">
+    <mat-form-field appearance="outline">
+      <input aria-label="convert-from" formControlName="toValue" type="number" min="0" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ selectName }}</mat-label>
+      <mat-select formControlName="toType">
+        <mat-option *ngFor="let currency of typeList" [value]="currency">
+          {{ currency }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

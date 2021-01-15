@@ -10,17 +10,16 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ChartsModule } from 'ng2-charts';
 
 import { CurrencyConverterComponent } from './currency-converter/currency-converter.component';
-import { LengthUnitConverterComponent } from './length-unit-converter/length-unit-converter/length-unit-converter.component';
+import { ConverterComponent } from './converter/converter.component';
 
 
 @NgModule({
   declarations: [
     CurrencyConverterComponent,
-    LengthUnitConverterComponent
+    ConverterComponent,
   ],
   exports: [
     CurrencyConverterComponent,
-    LengthUnitConverterComponent
   ],
   imports: [
     CommonModule,
