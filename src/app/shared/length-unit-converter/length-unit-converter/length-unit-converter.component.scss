@@ -1,0 +1,33 @@
+.length-unit-converter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 49px);
+
+  &__title {
+    margin: 16px 0 0;
+  }
+
+  > section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    margin-top: 16px;
+  }
+
+  &__form-block {
+    display: flex;
+    justify-content: space-around;
+    width: 100vw;
+    max-width: 500px;
+
+    > mat-form-field {
+      max-width: 45vw;
+    }
+  }
+
+  &__change-btn {
+    margin-bottom: 18px;
+  }
+}
