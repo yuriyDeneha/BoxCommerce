@@ -1,0 +1,27 @@
+.currency-converter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5vh;
+
+  > section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__form-block {
+    display: flex;
+    justify-content: space-around;
+    width: 100vw;
+    max-width: 500px;
+
+    > mat-form-field {
+      max-width: 45vw;
+    }
+  }
+
+  &__switch-btn {
+    margin-bottom: 18px;
+  }
+}
