@@ -1,19 +1,26 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild, AfterViewInit} from '@angular/core';
 import {LengthUnitsConverterItems} from './length-unit-converter.constants';
 import {UnitsEnum} from '../enums/units.enum';
+import {MatSelect} from '@angular/material/select';
 
 @Component({
   selector: 'app-length-unit-converter',
   templateUrl: './length-unit-converter.component.html',
   styleUrls: ['./length-unit-converter.component.scss']
 })
-export class LengthUnitConverterComponent {
+export class LengthUnitConverterComponent implements AfterViewInit {
+
+  @ViewChild('matSelectFirst') matSelectFirst: MatSelect;
+  @ViewChild('matSelectSecond') matSelectSecond: MatSelect;
+
+  public selectedFirstDropdownValue: string;
+  public selectedSecondDropdownValue: string;
 
   public lengthUnitsConverterItems = LengthUnitsConverterItems;
   public initialValue: number;
   public calculatedResult: number;
-  public initUnits: number;
-  public calculatedUnits: number;
+  public initUnits: number | string;
+  public calculatedUnits: number | string;
 
   public calculateResult(): void {
     if (!this.initialValue || !this.initUnits || !this.calculatedUnits) {
@@ -240,10 +247,18 @@ export class LengthUnitConverterComponent {
     }
   }
 
+  ngAfterViewInit(): any {
+    this.matSelectFirst.valueChange.subscribe((value) => this.selectedFirstDropdownValue = value);
+    this.matSelectSecond.valueChange.subscribe((value) => this.selectedSecondDropdownValue = value);
+  }
+
   public swapUnits(): void {
     const initTemporaryUnit = this.initUnits;
     this.initUnits = this.calculatedUnits;
     this.calculatedUnits = initTemporaryUnit;
+    const sel = this.selectedFirstDropdownValue;
+    this.selectedFirstDropdownValue = this.selectedSecondDropdownValue;
+    this.selectedSecondDropdownValue = sel;
     this.calculateResult();
   }
 }
