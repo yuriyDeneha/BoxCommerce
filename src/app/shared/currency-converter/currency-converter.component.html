@@ -1,5 +1,7 @@
 <div class="currency-converter" [formGroup]="currencyForm">
 
+  <h1 *ngIf="coefficient">1{{ currencyForm.get('fromCurrency').value }} equals {{ coefficient.toFixed(2) + currencyForm.get('toCurrency').value }}</h1>
+
   <div>
     <mat-form-field appearance="outline">
       <input aria-label="convert-from" formControlName="fromValue" type="number" min="0" matInput>
@@ -31,21 +33,24 @@
   </div>
 
   <!--  CHART-->
-  <mat-button-toggle-group formControlName="period" aria-label="Period">
-    <mat-button-toggle [value]="Period.week">Last {{ Period.week }} days</mat-button-toggle>
-    <mat-button-toggle [value]="Period.month">Last {{ Period.month }} days</mat-button-toggle>
-    <mat-button-toggle [value]="Period.year">Last {{ Period.year }} days</mat-button-toggle>
-  </mat-button-toggle-group>
-  <div *ngIf="currencyForm.get('fromCurrency').valid && currencyForm.get('toCurrency').valid">
-    <div style="display: block">
-      <canvas baseChart
-              height="500" width="500"
-              [datasets]="lineChartData"
-              [labels]="lineChartLabels"
-              [options]="lineChartOptions"
-              [chartType]="lineChartType">
-      </canvas>
+  <ng-container *ngIf="showChat">
+    <mat-button-toggle-group formControlName="period" aria-label="Period">
+      <mat-button-toggle [value]="Period.week">Last {{ Period.week }} days</mat-button-toggle>
+      <mat-button-toggle [value]="Period.month">Last {{ Period.month }} days</mat-button-toggle>
+      <mat-button-toggle [value]="Period.year">Last {{ Period.year }} days</mat-button-toggle>
+    </mat-button-toggle-group>
+    <div *ngIf="currencyForm.get('fromCurrency').valid && currencyForm.get('toCurrency').valid">
+      <div style="display: block">
+        <canvas baseChart
+                height="500" width="500"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                chartType="line">
+        </canvas>
+      </div>
     </div>
-  </div>
+  </ng-container>
+
   <!-- / CHART-->
 </div>

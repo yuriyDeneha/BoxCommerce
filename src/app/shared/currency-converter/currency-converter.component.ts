@@ -13,20 +13,17 @@ export class CurrencyConverterComponent implements OnInit {
   currencyForm: FormGroup;
   currencyList: string[] = [];
   availableCurrencies: any[] = [];
+  coefficient: number;
   Period = Period;
+  showChat: boolean;
 
   lineChartOptions = {
-    // scaleShowVerticalLines: false,
+    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false
   };
   lineChartLabels = [];
-  // public lineChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  lineChartType = 'line';
-  // public lineChartLegend = true;
-  lineChartData = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-  ];
+  lineChartData = [];
 
   constructor(
     private fb: FormBuilder,
@@ -41,9 +38,9 @@ export class CurrencyConverterComponent implements OnInit {
 
   createForm(): void {
     this.currencyForm = this.fb.group({
-      fromValue: [0, [ Validators.min(0), Validators.required ]],
+      fromValue: [0],
       fromCurrency: ['', [ Validators.required ]],
-      toValue: [0, [ Validators.min(0), Validators.required ]],
+      toValue: [0],
       toCurrency: ['', [ Validators.required ]],
       period: [Period.month]
     });
@@ -61,29 +58,33 @@ export class CurrencyConverterComponent implements OnInit {
       this.currencyForm.get(key).valueChanges
         .pipe(debounceTime(0))
         .subscribe(res => {
-          if (key === 'period' && (this.currencyForm.get('fromCurrency').valid && this.currencyForm.get('toCurrency').valid)) {
-            this.getHistory();
+          if (key === 'fromValue' || key === 'toValue') {
+            this.currencyForm.get('fromValue').setValue(+this.currencyForm.get('fromValue').value, {emitEvent: false});
+            this.currencyForm.get('toValue').setValue(+this.currencyForm.get('toValue').value, {emitEvent: false});
           }
           if (this.currencyForm.invalid) {
             return;
           }
+          const roundTo = 10000;
           switch (key) {
             case 'fromCurrency':
             case 'toCurrency':
               this.getHistory();
             // tslint:disable-next-line:no-switch-case-fall-through
             case 'fromValue':
-              const coefficient1 = this.availableCurrencies[this.currencyForm.get('toCurrency').value]
+              this.coefficient = this.availableCurrencies[this.currencyForm.get('toCurrency').value]
                 / this.availableCurrencies[this.currencyForm.get('fromCurrency').value];
-              this.currencyForm.get('toValue').setValue((coefficient1 * this.currencyForm.get('fromValue').value)
-                .toFixed(4), {emitEvent: false});
+              this.currencyForm.get('toValue').setValue(Math.round((this.coefficient * this.currencyForm.get('fromValue').value) * roundTo)
+                / roundTo, {emitEvent: false});
               break;
             case 'toValue':
-              const coefficient2 = this.availableCurrencies[this.currencyForm.get('fromCurrency').value]
+              this.coefficient = this.availableCurrencies[this.currencyForm.get('fromCurrency').value]
                 / this.availableCurrencies[this.currencyForm.get('toCurrency').value];
-              this.currencyForm.get('fromValue').setValue((coefficient2 * this.currencyForm.get('toValue').value)
-                .toFixed(4), {emitEvent: false});
+              this.currencyForm.get('fromValue').setValue(Math.round((this.coefficient * this.currencyForm.get('toValue').value) * roundTo)
+              / roundTo, {emitEvent: false});
               break;
+            case 'period':
+              this.getHistory();
           }
         });
     });
@@ -91,27 +92,25 @@ export class CurrencyConverterComponent implements OnInit {
 
   switchValues(): void {
     const prevValues = this.currencyForm.value;
-    this.currencyForm.setValue({
-      fromValue: prevValues?.toValue,
+    this.currencyForm.patchValue({
       fromCurrency: prevValues?.toCurrency,
-      toValue: prevValues?.fromValue,
-      toCurrency: prevValues?.fromCurrency,
-      period: prevValues?.period
-    }, {emitEvent: false});
+      toCurrency: prevValues?.fromCurrency
+    });
     this.getHistory();
   }
 
   getHistory(): void {
+    this.showChat = this.currencyForm.get('fromCurrency').value !== this.currencyForm.get('toCurrency').value;
     const days = this.currencyForm.get('period').value;
     const date = new Date();
     date.setDate(date.getDate() - (days - 1));
     this.currencyService.getHistory(date, new Date()).subscribe(res => {
-      console.log(res);
       const data = [];
-      Object.keys(res?.rates).forEach(rate => {
-        console.log(res?.rates[rate]);
-        data.push(res?.rates[rate][this.currencyForm.get('toCurrency').value]
-        / res?.rates[rate][this.currencyForm.get('fromCurrency').value]);
+      const labels = [];
+      Object.keys(res?.rates).sort().forEach(rate => {
+        labels.push(rate);
+        data.push(res?.rates[rate]?.[this.currencyForm.get('toCurrency').value] || 1
+        / res?.rates[rate]?.[this.currencyForm.get('fromCurrency').value] || 1);
       });
       this.lineChartData = [
         {
@@ -119,7 +118,7 @@ export class CurrencyConverterComponent implements OnInit {
           label: `${this.currencyForm.get('fromCurrency').value} to ${this.currencyForm.get('toCurrency').value}`
         }
       ];
-      console.log(this.lineChartData);
+      this.lineChartLabels = labels;
     });
   }
 }
