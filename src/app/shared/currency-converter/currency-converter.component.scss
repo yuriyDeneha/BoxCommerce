@@ -2,12 +2,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 5vh;
+  height: calc(100vh - 49px);
+
+  &__title {
+    margin: 16px 0 0;
+  }
 
   > section {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
+    margin-top: 16px;
   }
 
   &__form-block {
@@ -23,5 +29,19 @@
 
   &__switch-btn {
     margin-bottom: 18px;
+  }
+
+  &__chart-control {
+    height: 45px;
+    min-height: 45px;
+  }
+
+  &__chart {
+    height: 100%;
+    width: 100vw;
+
+    > * {
+      height: 90%;
+    }
   }
 }

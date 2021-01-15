@@ -119,6 +119,8 @@ export class CurrencyConverterComponent implements OnInit {
         }
       ];
       this.lineChartLabels = labels;
+      // console.log(this.lineChartData);
+      // console.log(this.lineChartLabels);
     });
   }
 }

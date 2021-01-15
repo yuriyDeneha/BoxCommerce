@@ -1,7 +1,7 @@
 <div class="currency-converter" [formGroup]="currencyForm">
 
   <header *ngIf="coefficient">
-    <h2>1{{ currencyForm.get('fromCurrency').value }} equals {{ coefficient.toFixed(2) + currencyForm.get('toCurrency').value }}</h2>
+    <h2 class="currency-converter__title">1{{ currencyForm.get('fromCurrency').value }} equals {{ coefficient.toFixed(2) + currencyForm.get('toCurrency').value }}</h2>
   </header>
 
   <section>
@@ -37,12 +37,12 @@
 
     <!--  CHART-->
     <ng-container *ngIf="showChat">
-      <mat-button-toggle-group formControlName="period" aria-label="Period">
+      <mat-button-toggle-group formControlName="period" aria-label="Period" class="currency-converter__chart-control">
         <mat-button-toggle [value]="Period.week">Last {{ Period.week }} days</mat-button-toggle>
         <mat-button-toggle [value]="Period.month">Last {{ Period.month }} days</mat-button-toggle>
         <mat-button-toggle [value]="Period.year">Last {{ Period.year }} days</mat-button-toggle>
       </mat-button-toggle-group>
-      <div *ngIf="currencyForm.get('fromCurrency').valid && currencyForm.get('toCurrency').valid">
+      <div *ngIf="currencyForm.get('fromCurrency').valid && currencyForm.get('toCurrency').valid" class="currency-converter__chart">
         <div style="display: block">
           <canvas baseChart
                   [datasets]="lineChartData"
