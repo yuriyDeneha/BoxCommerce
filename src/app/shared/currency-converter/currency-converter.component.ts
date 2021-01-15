@@ -109,8 +109,9 @@ export class CurrencyConverterComponent implements OnInit {
       const labels = [];
       Object.keys(res?.rates).sort().forEach(rate => {
         labels.push(rate);
-        data.push(res?.rates[rate]?.[this.currencyForm.get('toCurrency').value] || 1
-        / res?.rates[rate]?.[this.currencyForm.get('fromCurrency').value] || 1);
+        // or 1 for EUR
+        data.push((res?.rates[rate]?.[this.currencyForm.get('toCurrency').value] || 1)
+        / (res?.rates[rate]?.[this.currencyForm.get('fromCurrency').value] || 1));
       });
       this.lineChartData = [
         {
@@ -119,8 +120,6 @@ export class CurrencyConverterComponent implements OnInit {
         }
       ];
       this.lineChartLabels = labels;
-      // console.log(this.lineChartData);
-      // console.log(this.lineChartLabels);
     });
   }
 }
