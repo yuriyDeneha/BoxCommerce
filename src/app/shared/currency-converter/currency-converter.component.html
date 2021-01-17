@@ -1,12 +1,17 @@
 <div class="currency-converter" [formGroup]="currencyForm">
 
   <header *ngIf="currencyForm.get('coefficient').value">
-    <h2 class="currency-converter__title">1{{ currencyForm.get('fromType').value }} equals {{ Math.round(currencyForm.get('coefficient').value * 1000000) / 1000000 + currencyForm.get('toType').value }}</h2>
+    <h2 class="currency-converter__title">1{{ currencyForm.get('fromType').value }} equals {{ valueForOneItem }}</h2>
   </header>
 
   <section>
 
-    <app-converter [selectName]="'Currency'" [converterForm]="currencyForm" [typeList]="currencyList" [valueList]="availableCurrencies"></app-converter>
+    <app-converter
+      [selectName]="'Currency'"
+      [converterForm]="currencyForm"
+      [typeList]="currencyList"
+      [valueList]="availableCurrencies"
+    ></app-converter>
 
     <!--  CHART-->
     <ng-container *ngIf="showChart">

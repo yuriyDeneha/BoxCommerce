@@ -37,4 +37,8 @@ export class LengthUnitConverterComponent implements OnInit {
       coefficient: [null],
     });
   }
+
+  get valueForOneItem(): number {
+    return Math.round(this.unitForm.get('coefficient').value * 1000000) / 1000000 + this.unitForm.get('toType').value;
+  }
 }

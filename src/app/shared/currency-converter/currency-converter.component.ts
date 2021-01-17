@@ -13,7 +13,6 @@ export class CurrencyConverterComponent implements OnInit {
   currencyForm: FormGroup;
   currencyList: string[] = [];
   availableCurrencies: any;
-  Math = Math;
   Period = Period;
   showChart: boolean;
 
@@ -94,6 +93,10 @@ export class CurrencyConverterComponent implements OnInit {
       ];
       this.lineChartLabels = labels;
     });
+  }
+
+  get valueForOneItem(): number {
+    return Math.round(this.currencyForm.get('coefficient').value * 1000000) / 1000000 + this.currencyForm.get('toType').value;
   }
 }
 
