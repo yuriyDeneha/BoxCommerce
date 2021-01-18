@@ -8,7 +8,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class LengthUnitConverterComponent implements OnInit {
   unitForm: FormGroup;
-  typeList: string[] = [ 'm', 'yd', 'in', 'ft', 'cm', 'km', 'ml', 'dm', 'mm', 'nm' ];
+  typeList: string[] = [ 'm', 'yd', 'in', 'ft', 'cm', 'km', 'ml', 'dm', 'mm' ];
   valueList: any = {
     m: 1,
     ft: 3.2808399,
@@ -18,8 +18,7 @@ export class LengthUnitConverterComponent implements OnInit {
     km: 0.001,
     ml: 0.000621371192,
     dm: 10,
-    mm: 1000,
-    nm: 1000000000
+    mm: 1000
   };
   Math = Math;
 
