@@ -1,0 +1,13 @@
+<div class="length-unit-converter" [formGroup]="unitForm">
+
+  <header *ngIf="unitForm.get('coefficient').value">
+    <h2 class="length-unit-converter__title">1{{ unitForm.get('fromType').value }} equals {{ valueForOneItem }}</h2>
+  </header>
+
+  <app-converter
+    [selectName]="'Unit'"
+    [converterForm]="unitForm"
+    [typeList]="typeList"
+    [valueList]="valueList"
+  ></app-converter>
+</div>

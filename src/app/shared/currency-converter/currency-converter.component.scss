@@ -1,0 +1,32 @@
+.currency-converter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 49px);
+
+  &__title {
+    margin: 16px 0 0;
+  }
+
+  > section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+
+  &__chart-control {
+    height: 45px;
+    min-height: 45px;
+  }
+
+  &__chart {
+    height: 100%;
+    min-height: 200px;
+    width: 90vw;
+
+    > * {
+      height: 80%;
+    }
+  }
+}
